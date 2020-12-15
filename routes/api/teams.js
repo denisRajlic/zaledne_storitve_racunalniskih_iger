@@ -48,11 +48,12 @@ async (req, res) => {
       secret,
     });
 
-    team.players.unshift(req.user.id);
+    team.members.unshift(req.user.id);
     
     await team.save();
 
-    const exists = await Game.findOne({ players: { _id: req.user.id } });
+    let exists = false;
+    game.players.map(player => { if (player.id.toString() === req.user.id) return exists = true; });
     if (!exists) game.players.unshift(req.user.id);
 
     game.teams.unshift(team);
@@ -60,6 +61,43 @@ async (req, res) => {
     await game.save();
 
     return res.json(team);
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Game not found' }); // This runs if the ID passed in is not a valid object id
+    res.status(500).send('Server error');
+  }
+});
+
+// @route     POST api/teams/:teamId
+// @desc      Join a team
+// @access    Private
+router.post('/:teamId', [auth, [
+  check('secret', 'Secret is required').not().isEmpty(),
+]],
+async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+  const { secret } = req.body;
+
+  try {
+    // Check if team exists
+    const team = await Team.findOne({ _id: req.params.teamId });
+    if (!team) return res.status(400).json({ errors: [{ msg: 'Team not found' }] });
+
+    // Check if user is already in the team
+    let exists = false;
+    team.members.map(member => { if (member._id.toString() === req.user.id) return exists = true; });
+
+    if (exists) return res.status(400).json({ errors: [{ msg: 'User is already a member of this team' }] });
+
+    if (secret === team.secret) {
+      team.members.unshift(req.user.id);
+      await team.save();
+      return res.json(team);
+    } 
+
+    return res.status(400).json({ errors: [{ msg: 'Secret Invalid' }] });
   } catch (err) {
     console.log(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Game not found' }); // This runs if the ID passed in is not a valid object id
