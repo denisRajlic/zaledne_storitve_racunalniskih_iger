@@ -105,4 +105,17 @@ async (req, res) => {
   }
 });
 
+// @route     GET api/teams/user
+// @desc      Get teams from user ID
+// @access    Private
+router.get('/user', auth, async (req, res) => {
+  try {
+    const teams = await Team.find({ members: { _id: req.user.id } });
+    return res.json(teams);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
