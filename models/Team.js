@@ -16,12 +16,14 @@ const TeamSchema = new mongoose.Schema({
   },
   players: [
     {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users'
-      }
+      type: Schema.Types.ObjectId,
+      ref: 'users'
     }
   ],
+  secret: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now,

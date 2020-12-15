@@ -29,25 +29,31 @@ router.get('/', auth, async (req, res) => {
 router.post('/', [auth, [
   check('name', 'Name is required').not().isEmpty(),
   check('gameId', 'Game ID is required').not().isEmpty(),
+  check('secret', 'Secret is required').not().isEmpty(),
 ]],
 async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-  const { name, gameId } = req.body;
+  const { name, gameId, secret } = req.body;
 
   try {
     const game = await Game.findOne({ _id: gameId });
-
     if (!game) return res.status(400).json({ errors: [{ msg: 'Game not found' }] });
 
     const team = new Team({
       name,
       game: gameId,
       owner: req.user.id,
+      secret,
     });
 
+    team.players.unshift(req.user.id);
+    
     await team.save();
+
+    const exists = await Game.findOne({ players: { _id: req.user.id } });
+    if (!exists) game.players.unshift(req.user.id);
 
     game.teams.unshift(team);
 
