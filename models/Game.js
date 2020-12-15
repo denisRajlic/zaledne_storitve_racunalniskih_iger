@@ -12,11 +12,9 @@ const GameSchema = new mongoose.Schema({
   },
   teams: [
     {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'teams'
-      }
-    }
+      type: Schema.Types.ObjectId,
+      ref: 'teams',
+    }    
   ],
   players: [
     {
