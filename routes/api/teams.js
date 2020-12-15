@@ -118,4 +118,33 @@ router.get('/user', auth, async (req, res) => {
   }
 });
 
+// @route     DELETE api/teams/:id
+// @desc      Delete team
+// @access    Private
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const team = await Team.findOne({ _id: req.params.id });
+    if (!team) return res.status(404).json({ msg: 'Team not found' });
+
+    // Check user
+    if (team.owner.toString() !== req.user.id) return res.status(401).json({ msg: 'User not authorized' });
+
+    await team.remove();
+
+    const game = await Game.findOne({ teams: { _id: req.params.id } });
+
+    const removeIndex = game.teams.map(team => team._id.toString()).indexOf(req.params.id);
+
+    game.teams.splice(removeIndex, 1);
+
+    await game.save();
+
+    return res.json({ msg: 'Team removed' });
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Post not found' }); // This runs if the ID passed in is not a valid object id
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
