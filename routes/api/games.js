@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
 
 const auth = require('../../middleware/auth');
 
@@ -28,12 +29,13 @@ router.get('/', auth, async (req, res) => {
 // @access    Private
 router.post('/', [auth, [
   check('name', 'Name is required').not().isEmpty(),
+  check('secret', 'Name is required').not().isEmpty(),
 ]],
 async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-  const { name } = req.body;
+  const { name, secret } = req.body;
 
   try {
     let game = await Game.findOne({ name });
@@ -43,7 +45,11 @@ async (req, res) => {
     game = new Game({
       name,
       developer: req.user.id,
+      secret,
     });    
+
+    const salt = await bcrypt.genSalt(10);
+    game.secret = await bcrypt.hash(secret, salt);
 
     // Save the user to the DB
     await game.save();
@@ -68,6 +74,43 @@ router.get('/user', auth, async (req, res) => {
     return res.json(games);
   } catch (err) {
     console.log(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route     POST api/games/:id
+// @desc      Join game
+// @access    Private
+router.post('/:id', [auth, [
+  check('secret', 'Secret is required').not().isEmpty(),
+]], 
+async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+  const { secret } = req.body;
+
+  try {
+    const game = await Game.findOne({ _id: req.params.id });
+    if (!game) return res.status(404).json({ msg: 'Game not found' });
+    
+    // Check if user is already in the game
+    let exists = false;
+    game.players.map(player => { if (player.id.toString() === req.user.id) return exists = true; });
+    if (exists) return res.status(400).json({ errors: [{ msg: 'User is already a player of this game' }] });
+
+    // Check if secrets match
+    const isMatch = await bcrypt.compare(secret, game.secret);
+    if (!isMatch) return res.status(400).json({ errors: [{ msg: 'Invalid Secret' }] });
+
+    // Add user to players array
+    game.players.unshift(req.user.id);
+    await game.save();
+
+    return res.json(game.players);
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Game not found' }); // This runs if the ID passed in is not a valid object id
     res.status(500).send('Server error');
   }
 });

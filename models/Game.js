@@ -24,6 +24,10 @@ const GameSchema = new mongoose.Schema({
       }
     }
   ],
+  secret: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now,

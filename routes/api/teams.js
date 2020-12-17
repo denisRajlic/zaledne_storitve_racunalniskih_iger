@@ -2,13 +2,13 @@ const express = require('express');
 
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
 
 const auth = require('../../middleware/auth');
 
 const Game = require('../../models/Game');
 const Team = require('../../models/Team');
 const User = require('../../models/User');
-
 
 // @route     Get api/teams
 // @desc      Get all teams by user ID
@@ -48,6 +48,9 @@ async (req, res) => {
       secret,
     });
 
+    const salt = await bcrypt.genSalt(10);
+    team.secret = await bcrypt.hash(secret, salt);
+
     team.members.unshift(req.user.id);
     
     await team.save();
@@ -80,24 +83,30 @@ async (req, res) => {
 
   const { secret } = req.body;
 
-  try {
+  try {    
     // Check if team exists
     const team = await Team.findOne({ _id: req.params.teamId });
     if (!team) return res.status(400).json({ errors: [{ msg: 'Team not found' }] });
 
-    // Check if user is already in the team
+    // If user is not already a player of the game, he cannot join a team
     let exists = false;
-    team.members.map(member => { if (member._id.toString() === req.user.id) return exists = true; });
+    const game = await Game.findOne({ _id: team.game });
+    game.players.map(player => { if (player._id.toString() === req.user.id) return exists = true; });
+    if (!exists) return res.status(400).json({ errors: [{ msg: 'User is unable to join, since he/she is not yet a player of this game' }] });
 
+    // Check if user is already in the team
+    exists = false;
+    team.members.map(member => { if (member._id.toString() === req.user.id) return exists = true; });
     if (exists) return res.status(400).json({ errors: [{ msg: 'User is already a member of this team' }] });
 
-    if (secret === team.secret) {
-      team.members.unshift(req.user.id);
-      await team.save();
-      return res.json(team);
-    } 
+    // Check if secrets match
+    const isMatch = await bcrypt.compare(secret, team.secret);
+    if (!isMatch) return res.status(400).json({ errors: [{ msg: 'Invalid Secret' }] });
+    
+    team.members.unshift(req.user.id);
+    await team.save();
 
-    return res.status(400).json({ errors: [{ msg: 'Secret Invalid' }] });
+    return res.json(team);
   } catch (err) {
     console.log(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Game not found' }); // This runs if the ID passed in is not a valid object id
