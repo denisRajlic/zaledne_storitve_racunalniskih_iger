@@ -72,7 +72,7 @@ async (req, res) => {
 });
 
 // @route     POST api/teams/:teamId
-// @desc      Join a team
+// @desc      Join a team - Joining is ONLY possible if the user is already a player of the game beforehand
 // @access    Private
 router.post('/:teamId', [auth, [
   check('secret', 'Secret is required').not().isEmpty(),

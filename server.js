@@ -16,6 +16,7 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/games', require('./routes/api/games'));
 app.use('/api/teams', require('./routes/api/teams'));
+app.use('/api/results', require('./routes/api/results'));
 
 const PORT = process.env.PORT || 5000;
 
