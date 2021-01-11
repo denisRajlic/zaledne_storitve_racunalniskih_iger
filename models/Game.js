@@ -6,7 +6,7 @@ const GameSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  developer: {
+  host: {
     type: Schema.Types.ObjectId,
     ref: 'users',
   },

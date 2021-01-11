@@ -11,11 +11,11 @@ const Team = require('../../models/Team');
 const User = require('../../models/User');
 
 // @route     Get api/games
-// @desc      Get all games developed by user
+// @desc      Get all games created by user
 // @access    Private
 router.get('/', auth, async (req, res) => {
   try {
-    const games = await Game.find({ developer: req.user.id }).populate('developer', ['username'], User).populate('teams', [], Team);
+    const games = await Game.find({ host: req.user.id }).populate('host', ['username'], User).populate('teams', [], Team);
 
     return res.json(games);
   } catch (err) {
@@ -44,7 +44,7 @@ async (req, res) => {
 
     game = new Game({
       name,
-      developer: req.user.id,
+      host: req.user.id,
       secret,
     });    
 
@@ -69,7 +69,7 @@ router.get('/user', auth, async (req, res) => {
   try {
     const games = await Game.find({$or: [
       { players: { _id: req.user.id } },
-      { developer: { _id: req.user.id } },
+      { host: { _id: req.user.id } },
     ]});
     return res.json(games);
   } catch (err) {
@@ -124,7 +124,7 @@ router.delete('/:id', auth, async (req, res) => {
     if (!game) return res.status(404).json({ msg: 'Game not found' });
 
     // Check user
-    if (game.developer.toString() !== req.user.id) return res.status(401).json({ msg: 'User not authorized' });
+    if (game.host.toString() !== req.user.id) return res.status(401).json({ msg: 'User not authorized' });
 
     await game.remove();
 
