@@ -4,6 +4,8 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
+const io = require('../../server');
+
 const User = require('../../models/User');
 const Result = require('../../models/Result');
 const Game = require('../../models/Game');
@@ -24,7 +26,6 @@ async (req, res) => {
   try {
     
     // Check if player ID's are valid
-    // TODO: Check if they are actually players of the game, not valid players
 
     let playerId;
 
@@ -50,7 +51,7 @@ async (req, res) => {
       playerId = await User.findOne({ _id: players[i].user });
       playerId.xp += parseInt(players[i].xp);
       await playerId.save();
-    }
+    }    
 
     return res.json(result);
   } catch (err) {
