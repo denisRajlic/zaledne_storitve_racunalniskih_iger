@@ -10,11 +10,6 @@ const User = require('../../models/User');
 const Result = require('../../models/Result');
 const Game = require('../../models/Game');
 
-function updateScore() {
-  const results = User.find().sort({ xp: -1 });
-  console.log(results);
-}
-
 // @route     POST api/results
 // @desc      Create a result
 // @access    Private

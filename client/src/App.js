@@ -8,7 +8,7 @@ function App() {
   useEffect(() => {
     const socket = io.connect(ENDPOINT);
 
-    socket.on('updateScore', (data) => {
+    socket.on('updateScore', data => {
       console.log(data);
     });
 

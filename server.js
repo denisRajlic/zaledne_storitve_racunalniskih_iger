@@ -33,7 +33,7 @@ const changeStream = User.watch();
 io.on('connection', socket => {
   console.log('New client connected');
 
-  changeStream.on('change', async change => {
+  changeStream.on('change', async () => {
     console.log('Collection changed');
     const results = await User.find().select(['-password', '-email', '-date', '-_id', '-__v']).sort({ xp: -1 });
     socket.emit('updateScore', results);
