@@ -1,0 +1,17 @@
+POST {{host}}/api/results
+Content-Type: application/json
+x-auth-token: {{token}}
+
+{
+	"players": [
+		{
+			"user": "5ff4f5e585cbd6620dc30578",
+			"xp": "100"		
+		},
+		{
+			"user": "5ff4f64585cbd6620dc3057a",
+			"xp": "250"		
+		}
+	],
+	"game": "5ff4f60585cbd6620dc30579"
+}

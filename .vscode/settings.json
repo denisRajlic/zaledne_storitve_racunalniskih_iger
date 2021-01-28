@@ -1,0 +1,11 @@
+{
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "token": "token",
+      "gameId": "6012d2e64ee5f6c0fbe9e770",
+      "teamId": "12312",
+      "joinGameId": "12312",
+      "host": "http://localhost:5000"
+    },
+  },
+}

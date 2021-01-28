@@ -1,0 +1,27 @@
+// Login user
+# @name login
+POST {{host}}/api/auth
+Content-Type: application/json
+
+{
+	"email": "denis@gmail.com",
+	"password": "123456"
+}
+
+###
+
+// Register User
+POST {{host}}/api/users
+content-type: application/json
+
+{
+	"username": "Denis",
+	"email": "denis@gmail.com",
+	"password": "123456"
+}
+
+###
+@token = {{login.response.body.$.token}}
+GET {{host}}/api/auth
+Content-Type: application/json
+x-auth-token: {{token}}

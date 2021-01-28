@@ -1,0 +1,30 @@
+// Create game
+POST {{host}}/api/games
+Content-Type: application/json
+x-auth-token: {{token}}
+
+{
+	"name": "Among Us Lobby 1",
+	"secret": "skrivnost"
+}
+
+###
+DELETE {{host}}/api/games/{{gameId}}
+x-auth-token: {{token}}
+
+### 
+
+// Join game
+POST {{host}}/api/games/{{joinGameId}}
+Content-Type: application/json
+x-auth-token: {{token}}
+
+{
+	"secret": "skrivnost"
+}
+
+###
+
+// Get games by host token
+GET {{host}}/api/games
+x-auth-token: {{token}}

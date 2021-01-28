@@ -1,0 +1,27 @@
+// Create Team
+POST {{host}}/api/teams
+Content-Type: application/json
+x-auth-token: {{token}}
+
+{
+	"name": "Impostors",
+	"gameId": "{{gameId}}",
+	"secret": "skrivnost"
+}
+
+###
+
+// Join Team
+POST {{host}}/api/teams/{{teamId}}
+Content-Type: application/json
+x-auth-token: {{token}}
+
+{
+	"secret": "skrivnost"
+}
+
+###
+
+// Delete team
+DELETE {{host}}/api/teams/{{teamId}}
+x-auth-token: {{token}}
