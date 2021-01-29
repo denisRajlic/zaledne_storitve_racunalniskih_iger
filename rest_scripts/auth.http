@@ -21,6 +21,7 @@ content-type: application/json
 }
 
 ###
+
 @token = {{login.response.body.$.token}}
 GET {{host}}/api/auth
 Content-Type: application/json

@@ -1,0 +1,837 @@
+{
+	"info": {
+		"_postman_id": "e7240d63-485c-4e0c-8e11-0cca1cc5c353",
+		"name": "ZSRI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register Users",
+					"item": [
+						{
+							"name": "Register Denis",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": "JSON Content ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\": \"Denis\",\n\t\"email\": \"denis@gmail.com\",\n\t\"password\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register David",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "JSON Content ",
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\": \"David\",\n\t\"email\": \"david@gmail.com\",\n\t\"password\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Tomaz",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "JSON Content ",
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"username\": \"Tomaz\",\n\t\"email\": \"tomaz@gmail.com\",\n\t\"password\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Login Users",
+					"item": [
+						{
+							"name": "Login David",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e200ad64-c1d0-4cb8-b298-7671420da82c",
+										"exec": [
+											"const jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"davidToken\", jsonData.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": "JSON Content ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"david@gmail.com\",\n\t\"password\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/auth",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"auth"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Denis",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e200ad64-c1d0-4cb8-b298-7671420da82c",
+										"exec": [
+											"const jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"denisToken\", jsonData.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "JSON Content ",
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"denis@gmail.com\",\n\t\"password\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/auth",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"auth"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Tomaz",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e200ad64-c1d0-4cb8-b298-7671420da82c",
+										"exec": [
+											"const jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"tomazToken\", jsonData.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "JSON Content ",
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"email\": \"tomaz@gmail.com\",\n\t\"password\": \"123456\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/auth",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"auth"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get Auth Users",
+					"item": [
+						{
+							"name": "Get Auth David",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3b5001d9-5115-4a33-b975-da61dd325afb",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "{{davidToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/auth",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"auth"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Auth Denis",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3b5001d9-5115-4a33-b975-da61dd325afb",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "{{denisToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/auth",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"auth"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Auth Tomaz",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3b5001d9-5115-4a33-b975-da61dd325afb",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-auth-token",
+										"value": "{{tomazToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/api/auth",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"auth"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Games & Teams",
+			"item": [
+				{
+					"name": "Create Game",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{denisToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Content ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Among Us\",\n\t\"secret\": \"skrivnost\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/games",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"games"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get games where Denis is host",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Denis's Token",
+								"key": "x-auth-token",
+								"type": "text",
+								"value": "{{denisToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/games",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"games"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Team",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Content ",
+								"type": "text"
+							},
+							{
+								"key": "x-auth-token",
+								"value": "{{denisToken}}",
+								"description": "Denis's Token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Impostors\",\n\t\"gameId\": \"5fdba50e1ba713c34101ba91\",\n\t\"secret\": \"skrivnost\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/teams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Teams Owned By Denis",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Denis's Token",
+								"key": "x-auth-token",
+								"type": "text",
+								"value": "{{denisToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/teams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join a Team",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Content ",
+								"type": "text"
+							},
+							{
+								"key": "x-auth-token",
+								"value": "{{denisToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"secret\": \"skrivnost\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/teams/{{teamId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"teams",
+								"{{teamId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all teams i am a part of",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{denisToken}}",
+								"description": "Denis's Token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/teams/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"teams",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all games i am a part of",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{denisToken}}",
+								"description": "Denis's Token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/games/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"games",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete team",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{denisToken}}",
+								"description": "Denis's Token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/teams/{{teamId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"teams",
+								"{{teamId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete game",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "{{denisToken}}",
+								"description": "Denis's Token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/games/{{gameId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"games",
+								"{{gameId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join game",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Content ",
+								"type": "text"
+							},
+							{
+								"key": "x-auth-token",
+								"value": "{{denisToken}}",
+								"description": "Denis's Token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"secret\": \"skrivnost\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/games/5ff4f60585cbd6620dc30579",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"games",
+								"5ff4f60585cbd6620dc30579"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5b267af9-09ae-4bd5-920f-e7f629821870",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "5b65c297-42fa-4b70-8cde-5f99cb839f43",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Results",
+			"item": [
+				{
+					"name": "Create Result",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWZmNGY1ZTU4NWNiZDY2MjBkYzMwNTc4In0sImlhdCI6MTYxMDQwMDI3NywiZXhwIjoxNjEwNDAzODc3fQ.JlgXH4ahNiY8TKeDXdHTAd585bIGMfix4ISgLoVxC38",
+								"description": "Denis's Token",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON Content ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"players\": [\n\t\t{\n\t\t\t\"user\": \"5ff4f5e585cbd6620dc30578\",\n\t\t\t\"xp\": \"100\"\t\t\n\t\t},\n\t\t{\n\t\t\t\"user\": \"5ff4f64585cbd6620dc3057a\",\n\t\t\t\"xp\": \"250\"\t\t\n\t\t}\n\t],\n\t\"game\": \"5ff4f60585cbd6620dc30579\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/results",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"results"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Game State",
+			"item": [
+				{
+					"name": "Init",
+					"item": [],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Joining",
+					"item": [],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Start",
+					"item": [],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Stop",
+					"item": [],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "63db8c2d-5d64-4958-ac77-e1a23ddcf494",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "3d3db91b-ee23-473f-bc69-3c1a3b9d029e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

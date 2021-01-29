@@ -8,4 +8,10 @@
       "host": "http://localhost:5000"
     },
   },
+  "postman.showRunInfoMessage": true,
+  "postman.showResultsInNewDocument": true,
+  "postman.showOutputAutomatically": true,
+  "postman.showProgressInToolbar": true,
+  "postman.testDefaultDelay": 0,
+  "postman.testDefaultIterations": 1,
 }
