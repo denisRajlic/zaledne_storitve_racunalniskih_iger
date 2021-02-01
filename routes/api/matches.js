@@ -6,29 +6,28 @@ const bcrypt = require('bcryptjs');
 
 const auth = require('../../middleware/auth');
 
-const Game = require('../../models/Game');
+const Match = require('../../models/Match');
 const Team = require('../../models/Team');
 const User = require('../../models/User');
 
-// @route     Get api/games
-// @desc      Get all games created by user
+// @route     Get api/matches
+// @desc      Get all matches created by user
 // @access    Private
 router.get('/', auth, async (req, res) => {
   try {
-    const games = await Game.find({ host: req.user.id }).populate('host', ['username'], User).populate('teams', [], Team);
+    const matches = await Match.find({ host: req.user.id }).populate('host', ['username'], User).populate('teams', [], Team);
 
-    return res.json(games);
+    return res.json(matches);
   } catch (err) {
     console.log(err.message);
     res.status(500).send('Server error');
   }
 });
 
-// @route     POST api/games
-// @desc      Create game
+// @route     POST api/matches
+// @desc      Create match
 // @access    Private
 router.post('/', [auth, [
-  check('name', 'Name is required').not().isEmpty(),
   check('secret', 'Name is required').not().isEmpty(),
 ]],
 async (req, res) => {
@@ -38,48 +37,44 @@ async (req, res) => {
   const { name, secret } = req.body;
 
   try {
-    let game = await Game.findOne({ name });
-
-    if (game) return res.status(400).json({ errors: [{ msg: 'Game already exists' }] });
-
-    game = new Game({
+    const match = new Match({
       name,
       host: req.user.id,
       secret,
     });    
 
     const salt = await bcrypt.genSalt(10);
-    game.secret = await bcrypt.hash(secret, salt);
+    match.secret = await bcrypt.hash(secret, salt);
 
     // Save the user to the DB
-    await game.save();
+    await match.save();
 
-    return res.json(game);
+    return res.json(match);
   } catch (err) {
     console.log(err.message);
-    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Game not found' }); // This runs if the ID passed in is not a valid object id
+    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Match not found' }); // This runs if the ID passed in is not a valid object id
     res.status(500).send('Server error');
   }
 });
 
-// @route     GET api/games/user
-// @desc      Get games user is a part of
+// @route     GET api/matches/user
+// @desc      Get matches user is a part of
 // @access    Private
 router.get('/user', auth, async (req, res) => {
   try {
-    const games = await Game.find({$or: [
+    const matches = await Match.find({$or: [
       { players: { _id: req.user.id } },
       { host: { _id: req.user.id } },
     ]});
-    return res.json(games);
+    return res.json(matches);
   } catch (err) {
     console.log(err.message);
     res.status(500).send('Server error');
   }
 });
 
-// @route     POST api/games/:id
-// @desc      Join game
+// @route     POST api/matches/:id
+// @desc      Join match
 // @access    Private
 router.post('/:id', [auth, [
   check('secret', 'Secret is required').not().isEmpty(),
@@ -91,47 +86,47 @@ async (req, res) => {
   const { secret } = req.body;
 
   try {
-    const game = await Game.findOne({ _id: req.params.id });
-    if (!game) return res.status(404).json({ msg: 'Game not found' });
+    const match = await Match.findOne({ _id: req.params.id });
+    if (!match) return res.status(404).json({ msg: 'Match not found' });
     
-    // Check if user is already in the game
+    // Check if user is already in the match
     let exists = false;
-    game.players.map(player => { if (player.id.toString() === req.user.id) return exists = true; });
-    if (exists) return res.status(400).json({ errors: [{ msg: 'User is already a player of this game' }] });
+    match.players.map(player => { if (player.id.toString() === req.user.id) return exists = true; });
+    if (exists) return res.status(400).json({ errors: [{ msg: 'User is already a player of this match' }] });
 
     // Check if secrets match
-    const isMatch = await bcrypt.compare(secret, game.secret);
+    const isMatch = await bcrypt.compare(secret, match.secret);
     if (!isMatch) return res.status(400).json({ errors: [{ msg: 'Invalid Secret' }] });
 
     // Add user to players array
-    game.players.unshift(req.user.id);
-    await game.save();
+    match.players.unshift(req.user.id);
+    await match.save();
 
-    return res.json(game.players);
+    return res.json(match.players);
   } catch (err) {
     console.log(err.message);
-    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Game not found' }); // This runs if the ID passed in is not a valid object id
+    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Match not found' }); // This runs if the ID passed in is not a valid object id
     res.status(500).send('Server error');
   }
 });
 
-// @route     DELETE api/games/:id
-// @desc      Delete game
+// @route     DELETE api/matches/:id
+// @desc      Delete match
 // @access    Private
 router.delete('/:id', auth, async (req, res) => {
   try {
-    const game = await Game.findOne({ _id: req.params.id });
-    if (!game) return res.status(404).json({ msg: 'Game not found' });
+    const match = await Match.findOne({ _id: req.params.id });
+    if (!match) return res.status(404).json({ msg: 'Match not found' });
 
     // Check user
-    if (game.host.toString() !== req.user.id) return res.status(401).json({ msg: 'User not authorized' });
+    if (match.host.toString() !== req.user.id) return res.status(401).json({ msg: 'User not authorized' });
 
-    await game.remove();
+    await match.remove();
 
-    // Delete all teams from the game
-    await Team.deleteMany({ game: req.params.id });
+    // Delete all teams from the match
+    await Team.deleteMany({ match: req.params.id });
 
-    return res.json({ msg: 'Game removed' });
+    return res.json({ msg: 'Match removed' });
   } catch (err) {
     console.log(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Post not found' }); // This runs if the ID passed in is not a valid object id
