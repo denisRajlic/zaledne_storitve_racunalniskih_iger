@@ -1,43 +1,37 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const MatchSchema = new mongoose.Schema({
+const GameSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  host: {
+  developer: {
     type: Schema.Types.ObjectId,
     ref: 'users',
   },
-  game: {
+  matches: {
     type: Schema.Types.ObjectId,
-    ref: 'games',
+    ref: 'matches',
   },
-  teams: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'teams',
-    }    
-  ],
   players: [
     {
       user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
-      }
+      },
+      xp: {
+        type: Number,
+        default: 0,
+      },
     }
   ],
-  secret: {
-    type: String,
-    required: true,
-  },
   date: {
     type: Date,
     default: Date.now,
   },
 });
 
-const Match = mongoose.model('match', MatchSchema);
+const Game = mongoose.model('game', GameSchema);
 
-module.exports = Match;
+module.exports = Game;

@@ -4,11 +4,9 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
-const io = require('../../server');
-
-const User = require('../../models/User');
 const Result = require('../../models/Result');
 const Match = require('../../models/Match');
+const Game = require('../../models/Game');
 
 // @route     POST api/results
 // @desc      Create a result
@@ -48,10 +46,10 @@ async (req, res) => {
 
     // Update player results
     for (let i = 0; i < players.length; i++) {
-      playerId = await User.findOne({ _id: players[i].user });
+      playerId = await Game.findOne({ players: { _id: players[i].user } });
       playerId.xp += parseInt(players[i].xp);
       await playerId.save();
-    }    
+    }
 
     return res.json(result);
   } catch (err) {
