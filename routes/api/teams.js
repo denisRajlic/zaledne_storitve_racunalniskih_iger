@@ -29,13 +29,14 @@ router.get('/', auth, async (req, res) => {
 router.post('/', [auth, [
   check('name', 'Name is required').not().isEmpty(),
   check('matchId', 'Match ID is required').not().isEmpty(),
+  check('game', 'Game ID is required').not().isEmpty(),
   check('secret', 'Secret is required').not().isEmpty(),
 ]],
 async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-  const { name, matchId, secret } = req.body;
+  const { name, matchId, secret, game } = req.body;
 
   try {
     const match = await Match.findOne({ _id: matchId });
@@ -45,6 +46,7 @@ async (req, res) => {
       name,
       match: matchId,
       owner: req.user.id,
+      game,
       secret,
     });
 

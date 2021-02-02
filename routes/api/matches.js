@@ -29,17 +29,19 @@ router.get('/', auth, async (req, res) => {
 // @access    Private
 router.post('/', [auth, [
   check('secret', 'Name is required').not().isEmpty(),
+  check('gameId', 'Game ID is required').not().isEmpty(),
 ]],
 async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-  const { name, secret } = req.body;
+  const { name, secret, gameId } = req.body;
 
   try {
     const match = new Match({
       name,
       host: req.user.id,
+      gameId,
       secret,
     });    
 
