@@ -13,18 +13,18 @@ const Game = require('../../models/Game');
 // @access    Private
 router.post('/', [auth, [
   check('players', 'Players are required').not().isEmpty(),
-  check('match', 'Match is required').not().isEmpty(),  
+  check('match', 'Match is required').not().isEmpty(),
+  check('gameId', 'Game ID is required').not().isEmpty(),
 ]],
 async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
   
-  const { players, match } = req.body;
+  const { players, match, gameId } = req.body;
 
   try {
     
     // Check if player ID's are valid
-
     let playerId;
 
     for (let i = 0; i < players.length; i++) {
@@ -45,10 +45,12 @@ async (req, res) => {
     await result.save();
 
     // Update player results
+    const game = await Game.findOne({ _id: gameId });
+    let user;
+
     for (let i = 0; i < players.length; i++) {
-      playerId = await Game.findOne({ players: { _id: players[i].user } });
-      playerId.xp += parseInt(players[i].xp);
-      await playerId.save();
+      game.players.find(player => player._id.toString() === players[i].user.toString()).xp += parseInt(players[i].xp);
+      await game.save();
     }
 
     return res.json(result);

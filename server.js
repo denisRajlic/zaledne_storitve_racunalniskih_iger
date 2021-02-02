@@ -34,9 +34,9 @@ const changeStream = Game.watch();
 io.on('connection', socket => {
   console.log('New client connected');
 
-  changeStream.on('change', async () => {
+  changeStream.on('change', async (change) => {
     console.log('Collection changed');
-    const results = await Game.find().select('xp').sort({ xp: -1 });
+    const results = await Game.findOne({ _id: change.documentKey._id }).select(['players.xp', '-_id']).sort({ xp: -1 });
     socket.emit('updateScore', results);
   });
 
