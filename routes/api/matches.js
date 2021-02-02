@@ -9,6 +9,9 @@ const auth = require('../../middleware/auth');
 const Match = require('../../models/Match');
 const Team = require('../../models/Team');
 const User = require('../../models/User');
+const Game = require('../../models/Game');
+
+const isInArray = require('../../helpers');
 
 // @route     Get api/matches
 // @desc      Get all matches created by user
@@ -38,10 +41,18 @@ async (req, res) => {
   const { name, secret, gameId } = req.body;
 
   try {
+    // Check if game exists
+    let game = await Game.findOne({ _id: gameId });
+    if (!game) return res.status(404).json({ msg: 'Game not found' });
+
+    // Check if user is a player of the game
+    if (!isInArray(game.players, req.user.id)) return res.status(400).json({ msg: 'User is not yet a player of this game' });
+
+    // Create match
     const match = new Match({
       name,
       host: req.user.id,
-      gameId,
+      game: gameId,
       secret,
     });    
 
@@ -90,11 +101,14 @@ async (req, res) => {
   try {
     const match = await Match.findOne({ _id: req.params.id });
     if (!match) return res.status(404).json({ msg: 'Match not found' });
-    
+
+    // Check if player is a player of the game
+    const game = await Game.findOne({ _id: match.game });
+
+    if (!isInArray(game.players, req.user.id)) return res.status(400).json({ msg: 'User is not yet a player of this game' });
+
     // Check if user is already in the match
-    let exists = false;
-    match.players.map(player => { if (player.id.toString() === req.user.id) return exists = true; });
-    if (exists) return res.status(400).json({ errors: [{ msg: 'User is already a player of this match' }] });
+    if (isInArray(match.players, req.user.id)) return res.status(400).json({ errors: [{ msg: 'User is already a player of this match' }] });
 
     // Check if secrets match
     const isMatch = await bcrypt.compare(secret, match.secret);

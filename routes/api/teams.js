@@ -9,6 +9,9 @@ const auth = require('../../middleware/auth');
 const Match = require('../../models/Match');
 const Team = require('../../models/Team');
 const User = require('../../models/User');
+const Game = require('../../models/Game');
+
+const isInArray = require('../../helpers');
 
 // @route     Get api/teams
 // @desc      Get all teams by user ID
@@ -29,24 +32,31 @@ router.get('/', auth, async (req, res) => {
 router.post('/', [auth, [
   check('name', 'Name is required').not().isEmpty(),
   check('matchId', 'Match ID is required').not().isEmpty(),
-  check('game', 'Game ID is required').not().isEmpty(),
+  check('gameId', 'Game ID is required').not().isEmpty(),
   check('secret', 'Secret is required').not().isEmpty(),
 ]],
 async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-  const { name, matchId, secret, game } = req.body;
+  const { name, matchId, secret, gameId } = req.body;
 
   try {
+    // Check if game exists
+    const game = await Game.findOne({ _id: gameId });
+    if (!game) return res.status(400).json({ errors: [{ msg: 'Game not found' }] });
+
     const match = await Match.findOne({ _id: matchId });
     if (!match) return res.status(400).json({ errors: [{ msg: 'Match not found' }] });
 
+    if (!isInArray(game.players, req.user.id)) return res.status(400).json({ msg: 'User is not a player of the game' });
+
+    // Create team
     const team = new Team({
       name,
       match: matchId,
       owner: req.user.id,
-      game,
+      game: gameId,
       secret,
     });
 
@@ -57,9 +67,8 @@ async (req, res) => {
     
     await team.save();
 
-    let exists = false;
-    match.players.map(player => { if (player.id.toString() === req.user.id) return exists = true; });
-    if (!exists) match.players.unshift(req.user.id);
+    // Add player to players array in matches
+    if (!isInArray(match.players, req.user.id)) match.players.unshift(req.user.id);
 
     match.teams.unshift(team);
 

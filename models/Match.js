@@ -13,6 +13,7 @@ const MatchSchema = new mongoose.Schema({
   game: {
     type: Schema.Types.ObjectId,
     ref: 'games',
+    required: true,
   },
   teams: [
     {

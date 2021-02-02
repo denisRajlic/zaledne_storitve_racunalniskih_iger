@@ -8,6 +8,8 @@ const Match = require('../../models/Match');
 const Team = require('../../models/Team');
 const Game = require('../../models/Game');
 
+const isInArray = require('../../helpers');
+
 // @route     POST api/games
 // @desc      Create a game
 // @access    Private
@@ -55,10 +57,33 @@ router.delete('/:id', auth, async (req, res) => {
     // Delete the game
     await game.remove();
 
-    return res.json({ msg: 'Game removed' });
+    return res.json({ msg: 'Game, teams and matches removed' });
   } catch (err) {
     console.log(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Game not found' });
+    res.status(500).send('Server error');
+  }
+});
+
+// @route     POST api/games/:id
+// @desc      Join game
+// @access    Private
+router.post('/:id', auth, async (req, res) => {
+  try {
+    // Check if game exists
+    const game = await Game.findOne({ _id: req.params.id });
+    if (!game) return res.status(404).json({ msg: 'Game not found' });
+
+    // Check if user is already in the players array
+    if (isInArray(game.players, req.user.id)) return res.status(400).json({ errors: [{ msg: 'User already joined' }] });
+
+    game.players.unshift(req.user.id);
+    await game.save();
+
+    return res.json(game);
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Player not found' });
     res.status(500).send('Server error');
   }
 });
