@@ -1,7 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/db');
 
-const User = require('./models/User');
+const Game = require('./models/Game');
 
 const app = express();
 const server = require('http').Server(app);
@@ -23,19 +23,20 @@ app.get('/', (req, res) => res.send('API Running'));
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
+app.use('/api/matches', require('./routes/api/matches'));
 app.use('/api/games', require('./routes/api/games'));
 app.use('/api/teams', require('./routes/api/teams'));
 app.use('/api/results', require('./routes/api/results'));
 
-const changeStream = User.watch();
+const changeStream = Game.watch();
 
 // Run when client connects
 io.on('connection', socket => {
   console.log('New client connected');
 
-  changeStream.on('change', async () => {
+  changeStream.on('change', async (change) => {
     console.log('Collection changed');
-    const results = await User.find().select(['-password', '-email', '-date', '-_id', '-__v']).sort({ xp: -1 });
+    const results = await Game.findOne({ _id: change.documentKey._id }).select(['players.xp', '-_id']).sort({ xp: -1 });
     socket.emit('updateScore', results);
   });
 

@@ -14,9 +14,9 @@ const ResultSchema = new mongoose.Schema({
       },      
     }
   ],
-  game: {
+  match: {
     type: Schema.Types.ObjectId,    
-    ref: 'games',
+    ref: 'match',
   },
   date: {
     type: Date,
