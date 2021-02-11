@@ -8,7 +8,7 @@ const Match = require('../../models/Match');
 const Team = require('../../models/Team');
 const Game = require('../../models/Game');
 
-const isInArray = require('../../helpers');
+const isInArray = require('../../helpers').isInArray;
 
 // @route     POST api/games
 // @desc      Create a game

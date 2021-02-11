@@ -11,7 +11,7 @@ const Team = require('../../models/Team');
 const User = require('../../models/User');
 const Game = require('../../models/Game');
 
-const isInArray = require('../../helpers');
+const isInArray = require('../../helpers').isInArray;
 
 // @route     Get api/teams
 // @desc      Get all teams by user ID

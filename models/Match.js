@@ -33,6 +33,14 @@ const MatchSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  result: {
+    type: Schema.Types.ObjectId,
+    ref: 'results'
+  },
+  isCompleted: {
+    type: Boolean,
+    default: false,
+  },
   date: {
     type: Date,
     default: Date.now,

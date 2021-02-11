@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const axios = require('axios');
 
 const auth = require('../../middleware/auth');
 
@@ -11,7 +12,8 @@ const Team = require('../../models/Team');
 const User = require('../../models/User');
 const Game = require('../../models/Game');
 
-const isInArray = require('../../helpers');
+const isInArray = require('../../helpers').isInArray;
+const createResult = require('../../helpers').createResult;
 
 // @route     Get api/matches
 // @desc      Get all matches created by user
@@ -143,6 +145,43 @@ router.delete('/:id', auth, async (req, res) => {
     await Team.deleteMany({ match: req.params.id });
 
     return res.json({ msg: 'Match removed' });
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Post not found' }); // This runs if the ID passed in is not a valid object id
+    res.status(500).send('Server error');
+  }
+});
+
+// @route     POST api/matches/:id/play
+// @desc      Gameplay
+// @access    Public for now
+router.post('/:id/play', [
+  check('players', 'Players are required').not().isEmpty(),
+],
+async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+  const { players } = req.body;
+
+  try {
+    // Check if player ids are valid
+    let playerId;
+    for (let i = 0; i < players.length; i++) {
+      playerId = await Match.findOne({ players: { _id: players[i].user }});
+      if (!playerId) return res.status(404).json({ msg: 'User is not a player of the match'});
+    }
+
+    const match = await Match.findOne({ _id: req.params.id });
+    if (!match) return res.status(404).json({ msg: 'Match not found' });
+    
+    players.map(player => {
+      player.xp += Math.floor(Math.random() * 100);
+    });
+
+    const result = await createResult(players, req.params.id);
+
+    return res.json(result);
   } catch (err) {
     console.log(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Post not found' }); // This runs if the ID passed in is not a valid object id
