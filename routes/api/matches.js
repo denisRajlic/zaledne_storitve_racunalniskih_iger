@@ -182,13 +182,18 @@ async (req, res) => {
 
     let result = await createResult(players, req.params.id);
 
-    // this should repeat multiple times, like during a game
-    let i = 3;
+    // Earning points during gameplay
+    let i = 3;    
     while (i > 0) {
       earnXpPoints(players);
       result = await createResult(players, req.params.id);
       i--;
     }
+
+    match.result = result;
+    match.isCompleted = true;
+
+    await match.save();
 
     return res.json(result);
   } catch (err) {
