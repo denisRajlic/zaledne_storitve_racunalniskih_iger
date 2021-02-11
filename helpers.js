@@ -21,7 +21,13 @@ const createResult = async (players, match) => {
   }
 };
 
+const earnXpPoints = players => {
+  const randomIndex = Math.floor(Math.random() * players.length);
+  players[randomIndex].xp += Math.floor(Math.random() * 100);
+};
+
 module.exports = {
   isInArray,
   createResult,
+  earnXpPoints,
 };

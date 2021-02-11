@@ -14,6 +14,7 @@ const Game = require('../../models/Game');
 
 const isInArray = require('../../helpers').isInArray;
 const createResult = require('../../helpers').createResult;
+const earnXpPoints = require('../../helpers').earnXpPoints;
 
 // @route     Get api/matches
 // @desc      Get all matches created by user
@@ -179,7 +180,15 @@ async (req, res) => {
       player.xp += Math.floor(Math.random() * 100);
     });
 
-    const result = await createResult(players, req.params.id);
+    let result = await createResult(players, req.params.id);
+
+    // this should repeat multiple times, like during a game
+    let i = 3;
+    while (i > 0) {
+      earnXpPoints(players);
+      result = await createResult(players, req.params.id);
+      i--;
+    }
 
     return res.json(result);
   } catch (err) {
