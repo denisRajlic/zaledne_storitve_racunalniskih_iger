@@ -63,12 +63,12 @@ async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     team.secret = await bcrypt.hash(secret, salt);
 
-    team.members.unshift(req.user.id);
+    team.members.unshift({ user: req.user.id });
     
     await team.save();
 
     // Add player to players array in matches
-    if (!isInArray(match.players, req.user.id)) match.players.unshift(req.user.id);
+    if (!isInArray(match.players, req.user.id)) match.players.unshift({ user: req.user.id });
 
     match.teams.unshift(team);
 
@@ -100,21 +100,18 @@ async (req, res) => {
     if (!team) return res.status(400).json({ errors: [{ msg: 'Team not found' }] });
 
     // If user is not already a player of the match, he cannot join a team
-    let exists = false;
     const match = await Match.findOne({ _id: team.match });
-    match.players.map(player => { if (player._id.toString() === req.user.id) return exists = true; });
-    if (!exists) return res.status(400).json({ errors: [{ msg: 'User is unable to join, since he/she is not yet a player of this match' }] });
+
+    if (!isInArray(match.players, req.user.id)) return res.status(400).json({ errors: [{ msg: 'User is unable to join, since he/she is not yet a player of this match' }] });
 
     // Check if user is already in the team
-    exists = false;
-    team.members.map(member => { if (member._id.toString() === req.user.id) return exists = true; });
-    if (exists) return res.status(400).json({ errors: [{ msg: 'User is already a member of this team' }] });
+    if (isInArray(team.members, req.user.id)) return res.status(400).json({ errors: [{ msg: 'User is already a member of this team' }] });
 
     // Check if secrets match
     const isMatch = await bcrypt.compare(secret, team.secret);
     if (!isMatch) return res.status(400).json({ errors: [{ msg: 'Invalid Secret' }] });
     
-    team.members.unshift(req.user.id);
+    team.members.unshift({ user: req.user.id });
     await team.save();
 
     return res.json(team);
@@ -130,7 +127,7 @@ async (req, res) => {
 // @access    Private
 router.get('/user', auth, async (req, res) => {
   try {
-    const teams = await Team.find({ members: { _id: req.user.id } });
+    const teams = await Team.find({ members: { user: req.user.id } });
     return res.json(teams);
   } catch (err) {
     console.log(err.message);

@@ -20,8 +20,10 @@ const TeamSchema = new mongoose.Schema({
   },
   members: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'users'
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+      }
     }
   ],
   secret: {

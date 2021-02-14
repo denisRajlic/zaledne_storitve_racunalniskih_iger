@@ -2,6 +2,7 @@ const express = require('express');
 const connectDB = require('./config/db');
 
 const Game = require('./models/Game');
+const User = require('./models/User');
 
 const app = express();
 const server = require('http').Server(app);
@@ -36,7 +37,7 @@ io.on('connection', socket => {
 
   changeStream.on('change', async (change) => {
     console.log('Collection changed');
-    const results = await Game.findOne({ _id: change.documentKey._id }).select(['players.xp', '-_id']).sort({ xp: -1 });
+    const results = await Game.findOne({ _id: change.documentKey._id }).select('players').populate('players.user', 'username', User);
     socket.emit('updateScore', results);
   });
 

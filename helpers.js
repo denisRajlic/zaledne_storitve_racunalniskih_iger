@@ -2,7 +2,7 @@ const Result = require('./models/Result');
 
 const isInArray = (arr, id) => {
   let exists = false;
-  arr.map(player => { if (player.id.toString() === id) return exists = true; });
+  arr.map(player => { if (player.user.toString() === id) return exists = true; });
   return exists;
 };
 

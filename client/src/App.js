@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import io from "socket.io-client";
 const ENDPOINT = "http://localhost:5000";
 
 function App() {
-  const [response, setResponse] = useState("");
+  const [sorted, setSorted] = useState([]);
 
   useEffect(() => {
     const socket = io.connect(ENDPOINT);
 
     socket.on('updateScore', data => {
       console.log(data);
+      // Sort by xp points
+      setSorted(Array.from(data.players).sort((a, b) => a.xp > b.xp ? -1 : 1));
     });
 
     // CLEAN UP THE EFFECT
@@ -17,9 +19,14 @@ function App() {
   }, []);
 
   return (
-    <p>
-      It's <time dateTime={response}>{response}</time>
-    </p>
+    <>
+      <h1>Best Players</h1>
+      {sorted.map((player, index) => (
+        <Fragment key={index}>
+          <p>{player.user.username} : {player.xp}</p>
+        </Fragment>
+      ))}
+    </>
   );
 }
 

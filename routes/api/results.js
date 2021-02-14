@@ -38,16 +38,7 @@ router.post('/', [
 
       if (!matchId) return res.status(404).json({ msg: 'Match not valid' });
 
-      const result = await createResult(players, match);
-
-      // // Update player results
-      // const game = await Game.findOne({ _id: gameId });
-      // let user;
-
-      // for (let i = 0; i < players.length; i++) {
-      //   game.players.find(player => player._id.toString() === players[i].user.toString()).xp += parseInt(players[i].xp);
-      //   await game.save();
-      // }
+      const result = await createResult(players, match);      
 
       return res.json(result);
     } catch (err) {

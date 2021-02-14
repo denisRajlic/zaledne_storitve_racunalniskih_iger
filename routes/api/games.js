@@ -77,7 +77,7 @@ router.post('/:id', auth, async (req, res) => {
     // Check if user is already in the players array
     if (isInArray(game.players, req.user.id)) return res.status(400).json({ errors: [{ msg: 'User already joined' }] });
 
-    game.players.unshift(req.user.id);
+    game.players.unshift({ user: req.user.id });
     await game.save();
 
     return res.json(game);

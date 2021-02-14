@@ -16,6 +16,8 @@ const isInArray = require('../../helpers').isInArray;
 const createResult = require('../../helpers').createResult;
 const earnXpPoints = require('../../helpers').earnXpPoints;
 
+const mongoose = require('mongoose');
+
 // @route     Get api/matches
 // @desc      Get all matches created by user
 // @access    Private
@@ -118,7 +120,7 @@ async (req, res) => {
     if (!isMatch) return res.status(400).json({ errors: [{ msg: 'Invalid Secret' }] });
 
     // Add user to players array
-    match.players.unshift(req.user.id);
+    match.players.unshift({ user: req.user.id });
     await match.save();
 
     return res.json(match.players);
@@ -166,16 +168,17 @@ async (req, res) => {
   const { players } = req.body;
 
   try {
+    // Check if match exists
+    const match = await Match.findOne({ _id: req.params.id });
+    if (!match) return res.status(404).json({ msg: 'Match not found' });
+
     // Check if player ids are valid
     let playerId;
     for (let i = 0; i < players.length; i++) {
-      playerId = await Match.findOne({ players: { _id: players[i].user }});
+      playerId = await Match.findOne({ 'players.user': players[i].user });
       if (!playerId) return res.status(404).json({ msg: 'User is not a player of the match'});
     }
 
-    const match = await Match.findOne({ _id: req.params.id });
-    if (!match) return res.status(404).json({ msg: 'Match not found' });
-    
     players.map(player => {
       player.xp += Math.floor(Math.random() * 100);
     });
@@ -191,9 +194,17 @@ async (req, res) => {
     }
 
     match.result = result;
-    match.isCompleted = true;
+    match.isCompleted = true;   
 
     await match.save();
+
+    // Update player results
+    const game = await Game.findOne({ _id: match.game });
+
+    for (let i = 0; i < players.length; i++) {
+      game.players.find(player => player.user.toString() === players[i].user.toString()).xp += parseInt(players[i].xp);
+      await game.save();
+    }
 
     return res.json(result);
   } catch (err) {
