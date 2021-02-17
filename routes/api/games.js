@@ -7,6 +7,7 @@ const auth = require('../../middleware/auth');
 const Match = require('../../models/Match');
 const Team = require('../../models/Team');
 const Game = require('../../models/Game');
+const Result = require('../../models/Result');
 
 const isInArray = require('../../helpers').isInArray;
 
@@ -50,14 +51,15 @@ router.delete('/:id', auth, async (req, res) => {
     // Check user
     if (game.developer.toString() !== req.user.id) return res.status(401).json({ msg: 'User not authorized' });
 
-    // Delete all teams and matches from the game
+    // Delete all teams, matches and results from the game
+    await Result.deleteMany({ game: req.params.id });
     await Team.deleteMany({ game: req.params.id });
     await Match.deleteMany({ game: req.params.id });
 
     // Delete the game
     await game.remove();
 
-    return res.json({ msg: 'Game, teams and matches removed' });
+    return res.json({ msg: 'Game, teams, matches and results removed' });
   } catch (err) {
     console.log(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Game not found' });

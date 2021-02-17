@@ -26,6 +26,10 @@ const MatchSchema = new mongoose.Schema({
       user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
+      },
+      xp: {
+        type: Number,
+        default: 0,
       }
     }
   ],

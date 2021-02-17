@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
-const axios = require('axios');
 
 const auth = require('../../middleware/auth');
 
@@ -11,12 +10,11 @@ const Match = require('../../models/Match');
 const Team = require('../../models/Team');
 const User = require('../../models/User');
 const Game = require('../../models/Game');
+const Result = require('../../models/Result');
 
 const isInArray = require('../../helpers').isInArray;
 const createResult = require('../../helpers').createResult;
 const earnXpPoints = require('../../helpers').earnXpPoints;
-
-const mongoose = require('mongoose');
 
 // @route     Get api/matches
 // @desc      Get all matches created by user
@@ -155,47 +153,59 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
-// @route     POST api/matches/:id/play
+// @route     GET api/matches/:id/play
 // @desc      Gameplay
 // @access    Public for now
-router.post('/:id/play', [
-  check('players', 'Players are required').not().isEmpty(),
-],
-async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
-  const { players } = req.body;
-
+router.get('/:id/play', async (req, res) => {
+  
   try {
     // Check if match exists
     const match = await Match.findOne({ _id: req.params.id });
     if (!match) return res.status(404).json({ msg: 'Match not found' });
-
-    // Check if player ids are valid
-    let playerId;
-    for (let i = 0; i < players.length; i++) {
-      playerId = await Match.findOne({ 'players.user': players[i].user });
-      if (!playerId) return res.status(404).json({ msg: 'User is not a player of the match'});
-    }
-
-    players.map(player => {
-      player.xp += Math.floor(Math.random() * 100);
-    });
+    
+    if (match.isCompleted) return res.status(400).json({ msg: 'Match has already been completed' });
+    
+    const { players, game } = match;
 
     let result = await createResult(players, req.params.id);
 
     // Earning points during gameplay
-    let i = 3;    
+    let i = 3;
     while (i > 0) {
       earnXpPoints(players);
-      result = await createResult(players, req.params.id);
+      result = await createResult(players, req.params.id, game);
       i--;
     }
 
+    // Save result to match
     match.result = result;
-    match.isCompleted = true;   
+    await match.save();
 
+    return res.json(match);
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Post not found' }); // This runs if the ID passed in is not a valid object id
+    res.status(500).send('Server error');
+  }
+});
+
+// @route     GET api/matches/:id/stop
+// @desc      Stop game - save results
+// @access    Public for now
+router.get('/:id/stop', async (req, res) => {
+  try {
+    // Check if match exists
+    const match = await Match.findOne({ _id: req.params.id });
+    if (!match) return res.status(404).json({ msg: 'Match not found' });
+    
+    if (match.isCompleted) return res.status(400).json({ msg: 'Match has already been completed' });
+
+    const result = await Result.findOne({ _id: match.result });
+
+    const { players } = result;
+
+    // Stop game
+    match.isCompleted = true;
     await match.save();
 
     // Update player results
@@ -206,7 +216,7 @@ async (req, res) => {
       await game.save();
     }
 
-    return res.json(result);
+    return res.json({ msg: 'Game successfully stopped!' });
   } catch (err) {
     console.log(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Post not found' }); // This runs if the ID passed in is not a valid object id

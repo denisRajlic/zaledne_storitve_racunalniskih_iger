@@ -4,9 +4,7 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
-const Result = require('../../models/Result');
 const Match = require('../../models/Match');
-const Game = require('../../models/Game');
 
 const createResult = require('../../helpers').createResult;
 
@@ -16,13 +14,12 @@ const createResult = require('../../helpers').createResult;
 router.post('/', [
   check('players', 'Players are required').not().isEmpty(),
   check('match', 'Match is required').not().isEmpty(),
-  check('gameId', 'Game ID is required').not().isEmpty(),
 ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
     
-    const { players, match, gameId } = req.body;
+    const { players, match } = req.body;
 
     try {
       // Check if player ID's are valid

@@ -6,11 +6,12 @@ const isInArray = (arr, id) => {
   return exists;
 };
 
-const createResult = async (players, match) => {
+const createResult = async (players, match, game) => {
   try {    
     const result = new Result({
       players,
       match,
+      game,
     });
 
     await result.save();

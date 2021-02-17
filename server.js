@@ -36,9 +36,17 @@ io.on('connection', socket => {
   console.log('New client connected');
 
   changeStream.on('change', async (change) => {
+    // Only emit event if there was an update (so not when the collection is first made, since then we do not have players to emit)
+    if (change.operationType !== 'update') return;
+
     console.log('Collection changed');
-    const results = await Game.findOne({ _id: change.documentKey._id }).select('players').populate('players.user', 'username', User);
-    socket.emit('updateScore', results);
+    try {
+      const game = await Game.findOne({ _id: change.documentKey._id }).select('players').populate('players.user', 'username', User);
+
+      if (game.players.length > 0 && !!game.populated('players.user')) socket.emit('updateScore', game);
+    } catch (err) {
+      console.log(err.message);
+    }
   });
 
   socket.on('disconnect', () => {

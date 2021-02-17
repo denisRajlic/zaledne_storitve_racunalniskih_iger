@@ -18,6 +18,11 @@ const ResultSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,    
     ref: 'match',
   },
+  game: {
+    type: Schema.Types.ObjectId,
+    ref: 'games',
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now,
