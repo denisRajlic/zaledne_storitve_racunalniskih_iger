@@ -20,10 +20,10 @@ function App() {
 
   return (
     <>
-      <h1>Best Players</h1>
+      <h1>Leaderboards</h1>
       {sorted.map((player, index) => (
         <Fragment key={index}>
-          <p>{player.user.username} : {player.xp}</p>
+          <p><span className="username">{player.user.username}</span> : {player.xp} xp</p>
         </Fragment>
       ))}
     </>

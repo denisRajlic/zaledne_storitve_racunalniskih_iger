@@ -167,10 +167,10 @@ router.get('/:id/play', async (req, res) => {
     
     const { players, game } = match;
 
-    let result = await createResult(players, req.params.id);
+    let result;
 
     // Earning points during gameplay
-    let i = 3;
+    let i = 5;
     while (i > 0) {
       earnXpPoints(players);
       result = await createResult(players, req.params.id, game);
