@@ -1,0 +1,206 @@
+{
+	"id": "d0a9d66b-8797-479e-882c-58ddbc681fbe",
+	"name": "Login Users",
+	"allTests": [],
+	"timestamp": "2021-03-11T15:25:40.381Z",
+	"collection_id": "e7240d63-485c-4e0c-8e11-0cca1cc5c353",
+	"folder_id": "3b955871-8efe-4de8-93df-80f36b6be4c6",
+	"target_type": "folder",
+	"environment_id": "cb34beaf-a4d5-4a1e-85dc-f5e5f5fff95c",
+	"data": [],
+	"delay": 0,
+	"count": 1,
+	"collection": {
+		"id": "e7240d63-485c-4e0c-8e11-0cca1cc5c353",
+		"name": "ZSRI",
+		"description": "",
+		"auth": null,
+		"events": [
+			{
+				"listen": "prerequest",
+				"script": {
+					"id": "63db8c2d-5d64-4958-ac77-e1a23ddcf494",
+					"type": "text/javascript",
+					"exec": [
+						""
+					]
+				}
+			},
+			{
+				"listen": "test",
+				"script": {
+					"id": "3d3db91b-ee23-473f-bc69-3c1a3b9d029e",
+					"type": "text/javascript",
+					"exec": [
+						""
+					]
+				}
+			}
+		],
+		"variables": [],
+		"order": [],
+		"folders_order": [
+			"5dfcbd52-c557-4994-b91d-4c56eaa6d5d1",
+			"1ff5339f-77c6-4f8d-99f6-13dc60216b1c",
+			"0327fded-c6bb-436b-9137-000e111e43f8",
+			"cddaaf05-1cd7-4720-ac77-c154a5d6e1ef",
+			"fa26eea5-2e82-419f-9701-ea9102b8537d",
+			"54369a48-ad6a-46b1-b6fc-1409ac4b73f0",
+			"3835714f-94a0-46ff-971b-f63e44a07d0c",
+			"9683e898-198e-4d53-a819-6d5e4644f7ca",
+			"09afe2a8-cb0a-4827-841d-883f373b7c93",
+			"5a1b4de5-c027-4e19-84c3-0a927cf92b05"
+		],
+		"owner": "7014700",
+		"permissions": {},
+		"favorite": false,
+		"shared": false,
+		"type": "collection",
+		"depth": 0
+	},
+	"folder": {
+		"id": "3b955871-8efe-4de8-93df-80f36b6be4c6",
+		"name": "Login Users",
+		"description": "",
+		"auth": null,
+		"events": null,
+		"collection": "e7240d63-485c-4e0c-8e11-0cca1cc5c353",
+		"folder": "5dfcbd52-c557-4994-b91d-4c56eaa6d5d1",
+		"order": [
+			"8fbddc61-167e-4a0d-afa9-2012c58c29e9",
+			"decb9d82-4e35-4334-ac8e-6c7bdfcff4db",
+			"99f4da4f-d917-4832-9e72-016ed4b4696d"
+		],
+		"folders_order": [],
+		"type": "folder",
+		"depth": 2
+	},
+	"environment": null,
+	"globals": [],
+	"results": [
+		{
+			"name": "Login David",
+			"id": "8fbddc61-167e-4a0d-afa9-2012c58c29e9",
+			"url": "http://localhost:5000/api/auth",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"240"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "240",
+			"totalRequestTime": "240",
+			"iterationResults": {}
+		},
+		{
+			"name": "Login Denis",
+			"id": "decb9d82-4e35-4334-ac8e-6c7bdfcff4db",
+			"url": "http://localhost:5000/api/auth",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"229"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "229",
+			"totalRequestTime": "229",
+			"iterationResults": {}
+		},
+		{
+			"name": "Login Tomaz",
+			"id": "99f4da4f-d917-4832-9e72-016ed4b4696d",
+			"url": "http://localhost:5000/api/auth",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"233"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "233",
+			"totalRequestTime": "233",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 0,
+	"totalFail": 0,
+	"totalTime": 702,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "Login David",
+			"id": "8fbddc61-167e-4a0d-afa9-2012c58c29e9",
+			"url": "http://localhost:5000/api/auth",
+			"time": "2021-03-11T15:25:40.381Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Login Denis",
+			"id": "decb9d82-4e35-4334-ac8e-6c7bdfcff4db",
+			"url": "http://localhost:5000/api/auth",
+			"time": "2021-03-11T15:25:40.381Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Login Tomaz",
+			"id": "99f4da4f-d917-4832-9e72-016ed4b4696d",
+			"url": "http://localhost:5000/api/auth",
+			"time": "2021-03-11T15:25:40.381Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		}
+	],
+	"synced": false
+}
