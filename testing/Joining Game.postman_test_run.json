@@ -1,0 +1,206 @@
+{
+	"id": "39fd928f-1b0e-45bf-9925-74db2510a084",
+	"name": "Joining Game",
+	"allTests": [],
+	"timestamp": "2021-03-21T16:08:43.484Z",
+	"collection_id": "e7240d63-485c-4e0c-8e11-0cca1cc5c353",
+	"folder_id": "9683e898-198e-4d53-a819-6d5e4644f7ca",
+	"target_type": "folder",
+	"environment_id": "cb34beaf-a4d5-4a1e-85dc-f5e5f5fff95c",
+	"data": [],
+	"delay": 0,
+	"count": 1,
+	"collection": {
+		"id": "e7240d63-485c-4e0c-8e11-0cca1cc5c353",
+		"name": "ZSRI",
+		"description": "",
+		"auth": null,
+		"events": [
+			{
+				"listen": "prerequest",
+				"script": {
+					"id": "63db8c2d-5d64-4958-ac77-e1a23ddcf494",
+					"type": "text/javascript",
+					"exec": [
+						""
+					]
+				}
+			},
+			{
+				"listen": "test",
+				"script": {
+					"id": "3d3db91b-ee23-473f-bc69-3c1a3b9d029e",
+					"type": "text/javascript",
+					"exec": [
+						""
+					]
+				}
+			}
+		],
+		"variables": [],
+		"order": [],
+		"folders_order": [
+			"5dfcbd52-c557-4994-b91d-4c56eaa6d5d1",
+			"1ff5339f-77c6-4f8d-99f6-13dc60216b1c",
+			"0327fded-c6bb-436b-9137-000e111e43f8",
+			"cddaaf05-1cd7-4720-ac77-c154a5d6e1ef",
+			"fa26eea5-2e82-419f-9701-ea9102b8537d",
+			"54369a48-ad6a-46b1-b6fc-1409ac4b73f0",
+			"3835714f-94a0-46ff-971b-f63e44a07d0c",
+			"9683e898-198e-4d53-a819-6d5e4644f7ca",
+			"09afe2a8-cb0a-4827-841d-883f373b7c93",
+			"5a1b4de5-c027-4e19-84c3-0a927cf92b05"
+		],
+		"owner": "7014700",
+		"permissions": {},
+		"favorite": false,
+		"shared": false,
+		"type": "collection",
+		"depth": 0
+	},
+	"folder": {
+		"id": "9683e898-198e-4d53-a819-6d5e4644f7ca",
+		"name": "Joining Game",
+		"description": "",
+		"auth": null,
+		"events": null,
+		"collection": "e7240d63-485c-4e0c-8e11-0cca1cc5c353",
+		"folder": null,
+		"order": [
+			"c48b1d6b-8aa8-4ab7-8ac0-8ae5cc58047c",
+			"4ed61e0c-cc75-448b-bb77-3eb4888431b9",
+			"0089fed0-df93-4f8f-b112-43f241cd7c6b"
+		],
+		"folders_order": [],
+		"type": "folder",
+		"depth": 1
+	},
+	"environment": null,
+	"globals": [],
+	"results": [
+		{
+			"name": "Join Game Denis",
+			"id": "c48b1d6b-8aa8-4ab7-8ac0-8ae5cc58047c",
+			"url": "http://localhost:5000/api/games/60576f8480fbf6cdf5bca143",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"265"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "265",
+			"totalRequestTime": "265",
+			"iterationResults": {}
+		},
+		{
+			"name": "Join Game David",
+			"id": "4ed61e0c-cc75-448b-bb77-3eb4888431b9",
+			"url": "http://localhost:5000/api/games/60576f8480fbf6cdf5bca143",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"253"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "253",
+			"totalRequestTime": "253",
+			"iterationResults": {}
+		},
+		{
+			"name": "Join Game Tomaz",
+			"id": "0089fed0-df93-4f8f-b112-43f241cd7c6b",
+			"url": "http://localhost:5000/api/games/60576f8480fbf6cdf5bca143",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {},
+			"times": [
+				"241"
+			],
+			"allTests": [
+				{}
+			],
+			"time": "241",
+			"totalRequestTime": "241",
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 0,
+	"totalFail": 0,
+	"totalTime": 759,
+	"lifecycle": "done",
+	"requests": [
+		{
+			"name": "Join Game Denis",
+			"id": "c48b1d6b-8aa8-4ab7-8ac0-8ae5cc58047c",
+			"url": "http://localhost:5000/api/games/60576f8480fbf6cdf5bca143",
+			"time": "2021-03-21T16:08:43.484Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Join Game David",
+			"id": "4ed61e0c-cc75-448b-bb77-3eb4888431b9",
+			"url": "http://localhost:5000/api/games/60576f8480fbf6cdf5bca143",
+			"time": "2021-03-21T16:08:43.484Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		},
+		{
+			"name": "Join Game Tomaz",
+			"id": "0089fed0-df93-4f8f-b112-43f241cd7c6b",
+			"url": "http://localhost:5000/api/games/60576f8480fbf6cdf5bca143",
+			"time": "2021-03-21T16:08:43.484Z",
+			"responseCode": {
+				"code": 200,
+				"name": "OK",
+				"detail": {
+					"name": "OK",
+					"detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action."
+				}
+			},
+			"testPassFailCounts": {}
+		}
+	],
+	"synced": false
+}
