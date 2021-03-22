@@ -11,6 +11,20 @@ Repozitorij se uporablja za izdelavo zaključnega dela na Fakulteti za elektrote
 - MongoDB
 - React
 
+## Nastavitve okolja
+
+#### 1. Namestitev vseh paketov, ki jih program potrebuje za delovanje
+```sh
+npm install
+npm run client-dependencies
+```
+
+#### 2. Spremenljivke okolja
+
+V mapi config/ se nahaja datoteka default_tmp.json. To datoteko preimenujte v default.json in nastavite spremeljivke okolja.
+- mongoURI (https://www.mongodb.com/cloud/atlas)
+- jwtSecret (vaša lasten skrivni ključ, ki se bo uporabljal za kriptiranje jwt žetonov...hranite ga skrbno!)
+
 ## Postopek testiranja
 
 
