@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://admin:xxx@zsri.uwtiv.mongodb.net/xxx?retryWrites=true&w=majority",
+  "jwtSecret": "yyy"
+}
