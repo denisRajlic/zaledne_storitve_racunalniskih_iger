@@ -25,6 +25,13 @@ V mapi config/ se nahaja datoteka default_tmp.json. To datoteko preimenujte v de
 - mongoURI (https://www.mongodb.com/cloud/atlas)
 - jwtSecret (vaša lasten skrivni ključ, ki se bo uporabljal za kriptiranje jwt žetonov...hranite ga skrbno!)
 
+#### 3. Zagon
+
+Spodnji ukaz istočasno zažene strežnik in odjemalca.
+```sh
+npm run dev
+```
+
 ## Postopek testiranja
 
 
