@@ -7,7 +7,7 @@ const isInArray = (arr, id) => {
 };
 
 const createResult = async (players, match, game) => {
-  try {    
+  try {
     const result = new Result({
       players,
       match,
@@ -22,13 +22,7 @@ const createResult = async (players, match, game) => {
   }
 };
 
-const earnXpPoints = players => {
-  const randomIndex = Math.floor(Math.random() * players.length);
-  players[randomIndex].xp += Math.floor(Math.random() * 100);
-};
-
 module.exports = {
   isInArray,
   createResult,
-  earnXpPoints,
 };
