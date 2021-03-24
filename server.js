@@ -33,17 +33,20 @@ const changeStream = Game.watch();
 
 // Run when client connects
 io.on('connection', socket => {
-  console.log('New client connected');
+  
+  socket.on('joinRoom', (game) => {
+    console.log('joinroom', game)
+    socket.join(game.toLowerCase());
+  });
 
   changeStream.on('change', async (change) => {
     // Only emit event if there was an update (so not when the collection is first made, since then we do not have players to emit)
     if (change.operationType !== 'update') return;
 
-    console.log('Collection changed');
     try {
-      const game = await Game.findOne({ _id: change.documentKey._id }).select('players').populate('players.user', 'username', User);
+      const game = await Game.findOne({ _id: change.documentKey._id }).select(['players', 'name']).populate('players.user', 'username', User);
 
-      if (game.players.length > 0 && !!game.populated('players.user')) socket.emit('updateScore', game);
+      if (game.players.length > 0 && !!game.populated('players.user')) socket.to(game.name.toLowerCase()).emit('updateScore', game);
     } catch (err) {
       console.log(err.message);
     }
