@@ -33,10 +33,17 @@ const changeStream = Game.watch();
 
 // Run when client connects
 io.on('connection', socket => {
+  socket.on('joinRoom', async gameName => {
+    console.log('joinroom', gameName)
+    socket.join(gameName.toLowerCase());
+
+    try {
+      const game = await Game.findOne({ name: gameName.toLowerCase() }).select(['players', 'name']).populate('players.user', 'username', User);
   
-  socket.on('joinRoom', (game) => {
-    console.log('joinroom', game)
-    socket.join(game.toLowerCase());
+      if (game.players.length > 0 && !!game.populated('players.user')) io.to(game.name.toLowerCase()).emit('updateScore', game);
+    } catch (err) {
+      console.log(err.message);
+    }
   });
 
   changeStream.on('change', async (change) => {
