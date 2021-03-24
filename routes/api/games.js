@@ -25,7 +25,7 @@ async (req, res) => {
 
   try {
     const game = new Game({
-      name,
+      name: name.toLowerCase(),
       developer: req.user.id,
     });
 
