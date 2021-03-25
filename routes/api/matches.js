@@ -14,7 +14,6 @@ const Result = require('../../models/Result');
 
 const isInArray = require('../../helpers').isInArray;
 const createResult = require('../../helpers').createResult;
-const earnXpPoints = require('../../helpers').earnXpPoints;
 
 // @route     Get api/matches
 // @desc      Get all matches created by user
@@ -153,11 +152,19 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
-// @route     GET api/matches/:id/play
+// @route     POST api/matches/:id/play
 // @desc      Gameplay
 // @access    Public for now
-router.get('/:id/play', async (req, res) => {
-  
+router.post('/:id/play', [auth, [
+  check('item', 'Item is required').not().isEmpty(),
+  check('playerId', 'Player ID is required').not().isEmpty(),
+]],
+async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+  const { playerId, item } = req.body;
+
   try {
     // Check if match exists
     const match = await Match.findOne({ _id: req.params.id });
@@ -167,21 +174,33 @@ router.get('/:id/play', async (req, res) => {
     
     const { players, game } = match;
 
-    let result;
+    let points = 0;
+
+    switch (item.toLowerCase()) {
+      case 'dot':
+        points = 10;
+        break;
+      case 'fruit':
+        points = 50;
+        break;
+      case 'ghost':
+        points = 300;
+        break;
+      default:
+        return res.status(400).send('Not a valid item');
+    }
+
+    const index = players.findIndex(player => player.user.toString() === playerId);
+    players[index].xp += points;
 
     // Earning points during gameplay
-    let i = 5;
-    while (i > 0) {
-      earnXpPoints(players);
-      result = await createResult(players, req.params.id, game);
-      i--;
-    }
+    const result = await createResult(players, req.params.id, game);
 
     // Save result to match
     match.result = result;
     await match.save();
 
-    return res.json(match);
+    return res.json(result);
   } catch (err) {
     console.log(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({ msg: 'Post not found' }); // This runs if the ID passed in is not a valid object id

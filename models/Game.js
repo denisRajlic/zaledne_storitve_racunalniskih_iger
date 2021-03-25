@@ -5,6 +5,7 @@ const GameSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   developer: {
     type: Schema.Types.ObjectId,

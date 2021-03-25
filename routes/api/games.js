@@ -24,7 +24,11 @@ async (req, res) => {
   const { name } = req.body;
 
   try {
-    const game = new Game({
+    let game = await Game.findOne({ name: name.toLowerCase() });
+
+    if (game) return res.status(400).json({ errors: [{ msg: 'Game name taken' }] });
+
+    game = new Game({
       name: name.toLowerCase(),
       developer: req.user.id,
     });

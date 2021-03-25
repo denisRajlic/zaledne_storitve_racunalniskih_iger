@@ -40,16 +40,16 @@ io.on('connection', socket => {
     try {
       const game = await Game.findOne({ name: gameName.toLowerCase() }).select(['players', 'name']).populate('players.user', 'username', User);
   
-      if (game.players.length > 0 && !!game.populated('players.user')) io.to(game.name.toLowerCase()).emit('updateScore', game);
+      if (game) {
+        if (game.players.length > 0 && !!game.populated('players.user')) io.to(game.name.toLowerCase()).emit('updateScore', game);
+      }
+
     } catch (err) {
       console.log(err.message);
     }
   });
 
   changeStream.on('change', async (change) => {
-    // Only emit event if there was an update (so not when the collection is first made, since then we do not have players to emit)
-    if (change.operationType !== 'update') return;
-
     try {
       const game = await Game.findOne({ _id: change.documentKey._id }).select(['players', 'name']).populate('players.user', 'username', User);
 
